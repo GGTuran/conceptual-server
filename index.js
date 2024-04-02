@@ -55,6 +55,39 @@ async function run() {
       res.send(result);
     })
 
+    // get a single data 
+
+    app.get("/users/:id", async(req, res) =>{
+      const id = req.params.id;
+      console.log(id);
+      const query = {_id: new ObjectId(id)};
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    })
+
+    // update single data
+
+
+    app.put("/users/:id", async(req, res) =>{
+      const id = req.params.id;
+      const data = req.body;
+      const filter = {_id: new ObjectId(id)};
+      const options = { upsert: true };
+      const updatedData = {
+        $set: {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedData, options);
+      res.send(result);
+    })
+
+
+
+
+
     
     // delete
 
